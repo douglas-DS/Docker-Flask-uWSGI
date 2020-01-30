@@ -1,12 +1,10 @@
 node {
+    
     checkout scm
-
-    stage('Preparation') {
-        sh "git rev-parse --short HEAD > commit-id"
-        tag = readFile('commit-id').replace("\n", "").replace("\r", "")
-        appName = "app"
-        imageName = "${appName}:${tag}"
-    }
+    sh "git rev-parse --short HEAD > commit-id"
+    tag = readFile('commit-id').replace("\n", "").replace("\r", "")
+    appName = "app"
+    imageName = "${appName}:${tag}"
 
     stage('Build') {
         def customImage = docker.build("${imageName}")
