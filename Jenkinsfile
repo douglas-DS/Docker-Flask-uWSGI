@@ -7,8 +7,7 @@ node {
     imageName = "${appName}:${tag}"
 
     stage("Build")
-        //def customImage = docker.build("${imageName}")
-        sh "docker build ${imageName}"    
+        def customImage = docker.build("${imageName}")
     
     //stage("Push")
         //customImage.push()
