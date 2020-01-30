@@ -7,15 +7,16 @@ node {
     imageName = "${appName}:${tag}"
 
     stage("Build")
-        def customImage = docker.build("${imageName}")
+        //def customImage = docker.build("${imageName}")
+        sh "docker build -t ${imageName}"    
     
-    stage("Push")
-        customImage.push()
+    //stage("Push")
+        //customImage.push()
     
     stage("Deploy PROD")
-        customImage.push('latest')
+        //customImage.push('latest')
         sh "kubectl apply -f https://raw.githubusercontent.com/douglas-DS/Docker-Flask-uWSGI/master/k8s_app.yaml"
         //sh "kubectl apply -f /app/Docker-Flask-uWSGI/k8s_app.yaml"
-        sh "kubectl set image deployment/default app app=${imageName}"
+        sh "kubectl set image deployment app app=${imageName}"
         sh "kubectl rollout status deployment/app"
 }
