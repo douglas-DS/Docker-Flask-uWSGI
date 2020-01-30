@@ -8,7 +8,7 @@ node {
 
     stage("Build")
         //def customImage = docker.build("${imageName}")
-        sh "docker build -t ${imageName}"    
+        sh "docker build ${imageName}"    
     
     //stage("Push")
         //customImage.push()
