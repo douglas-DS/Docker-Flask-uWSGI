@@ -3,8 +3,9 @@ node {
     checkout scm
     sh "git rev-parse --short HEAD > commit-id"
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
+    companyName="flask"
     appName = "app"
-    imageName = "${appName}:${tag}"
+    imageName = "${companyName}/${appName}:${tag}"
 
     stage("Build")
         def customImage = docker.build("${imageName}")
