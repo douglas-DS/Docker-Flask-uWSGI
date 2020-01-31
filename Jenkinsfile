@@ -17,9 +17,9 @@ node {
     stage("Deploy PROD")
         customImage.push('latest')
         //sh "kubectl apply -f https://raw.githubusercontent.com/douglas-DS/Docker-Flask-uWSGI/master/k8s_app.yaml"
-        //sh "kubectl set image deployments/app app=${imageName}"
-        //sh "kubectl rollout status deployments/app"
+        sh "kubectl set image deployments/app app=${imageName}"
+        sh "kubectl rollout status deployments/app"
     
-        sh "kubectl set image deployment app app=${imageName}"
-        sh "kubectl rollout status deployment app"
+        //sh "kubectl set image deployment app app=${imageName}"
+        //sh "kubectl rollout status deployment app"
 }
