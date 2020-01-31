@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: "app:latest"
+          image: "flask/app:latest"
           imagePullPolicy: Always
           ports:
             - name: http
