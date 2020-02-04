@@ -1,11 +1,14 @@
 @Library('jenkins-shared-library')_
 node {
-    checkout scm
-    sh "git rev-parse --short HEAD > commit-id"
-    tag = readFile('commit-id').replace("\n", "").replace("\r", "")
     companyName="douglasso"
     appName = "app"
-    imageName = "${companyName}/${appName}:${tag}"
+
+    stage('Checkout')
+        checkout scm
+        sh "git rev-parse --short HEAD > commit-id"
+        def tag = readFile('commit-id').replace("\n", "").replace("\r", "")
+        def imageName = "${companyName}/${appName}:${tag}"
+        slackNotifier(currentBuild.currentResult, 'Checkout')
 
     stage('Build')
         def customImage = docker.build("${imageName}")
