@@ -18,8 +18,8 @@ pipeline {
         }
 
         stage('Build') {
+            customImage = docker.build("${imageName}")
             steps {
-                customImage = docker.build("${imageName}")
                 customImage.push()
             }
         }
