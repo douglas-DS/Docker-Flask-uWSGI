@@ -1,3 +1,4 @@
+@Library('jenkins-shared-library')_
 node {
     checkout scm
     sh "git rev-parse --short HEAD > commit-id"
