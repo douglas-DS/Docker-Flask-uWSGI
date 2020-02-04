@@ -6,13 +6,12 @@ pipeline {
         appName = "app"
     }
     stages {
+        
         stage('Checkout') {
             steps {
                 checkout scm
                 sh "git rev-parse --short HEAD > commit-id"
             }
-        }
-        environment {
             tag = readFile('commit-id').replace("\n", "").replace("\r", "")
             imageName = "${companyName}/${appName}:${tag}"
         }
