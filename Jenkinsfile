@@ -1,6 +1,6 @@
 @Library('jenkins-shared-library')_
-
-node {
+pipeline {
+    agent any
     checkout scm
     sh "git rev-parse --short HEAD > commit-id"
     tag = readFile('commit-id').replace("\n", "").replace("\r", "")
@@ -8,17 +8,28 @@ node {
     appName = "app"
     imageName = "${companyName}/${appName}:${tag}"
 
-    stage("Build")
-        def customImage = docker.build("${imageName}")
-    
-    stage("Push")
-        customImage.push()
-    
-    stage("Deploy PROD")
-        customImage.push('latest')
-        sh "kubectl apply -f https://raw.githubusercontent.com/douglas-DS/Docker-Flask-uWSGI/master/k8s_app.yaml"
-        sh "kubectl set image deployments/app app=${imageName}"
-        sh "kubectl rollout status deployments/app"
+    stages {
+        stage('Build') {
+            steps {
+                def customImage = docker.build("${imageName}")
+            }
+        }
+
+        stage('Push') {
+            steps {
+                customImage.push()
+            }
+        }
+
+        stage('Deploy PROD') {
+            steps {
+                customImage.push('latest')
+                sh "kubectl apply -f https://raw.githubusercontent.com/douglas-DS/Docker-Flask-uWSGI/master/k8s_app.yaml"
+                sh "kubectl set image deployments/app app=${imageName}"
+                sh "kubectl rollout status deployments/app"
+            }
+        }
+    }
     
     post {
         always {
