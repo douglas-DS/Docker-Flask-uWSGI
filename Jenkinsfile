@@ -1,14 +1,13 @@
 @Library('jenkins-shared-library')_
 pipeline {
     agent any
-    
+    environment {
+        companyName="douglasso"
+        appName = "app"
+        imageName = ""
+        customImage = null
+    }
     stages {
-        environment {
-            companyName="douglasso"
-            appName = "app"
-            imageName = ""
-            customImage = null
-        }
         stage('Checkout') {
             steps {
                 checkout scm
