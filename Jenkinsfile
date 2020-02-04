@@ -4,6 +4,7 @@ pipeline {
     environment {
         companyName="douglasso"
         appName = "app"
+        imageName="${companyName}/${appName}"
     }
     stages {
         
