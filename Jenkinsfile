@@ -20,10 +20,4 @@ node {
         sh "kubectl set image deployments/${appName} ${appName}=${imageName}"
         sh "kubectl rollout status deployments/${appName}"
         slackNotifier(currentBuild.currentResult)
-
-    post {
-        always {
-            slackNotifier(currentBuild.currentResult)
-        }
-    }
 }
