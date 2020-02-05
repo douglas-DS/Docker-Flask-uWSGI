@@ -15,7 +15,7 @@ node {
         slackNotifier(currentBuild.currentResult, 'Build image')
 
     stage('Push image')
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-ds') {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             custom.push()
             customImage.push('latest')
         }
