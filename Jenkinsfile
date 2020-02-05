@@ -17,7 +17,7 @@ node {
     stage('Push image')
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
             sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
-            custom.push()
+            customImage.push()
             customImage.push('latest')
         }
         slackNotifier(currentBuild.currentResult, 'Push image')
