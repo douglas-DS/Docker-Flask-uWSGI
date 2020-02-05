@@ -15,12 +15,13 @@ node {
         slackNotifier(currentBuild.currentResult, 'Build')
 
     stage('Push')
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-ds') {
-            custom.push()
-            customImage.push('latest')
-        }
-        //customImage.push()
+    try {
+        
+        customImage.push()
         slackNotifier(currentBuild.currentResult, 'Push')
+    } catch(err) {
+        slackNotifier(currentBuild.currentResult, 'Push')
+    }
 
     stage('Deploy PROD')
         //customImage.push('latest')
