@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    html = "<h3>Hello from k8s!!</h3>" \
+    html = "<h3>K8s cluster is working!!</h3>" \
            "<b>Hostname:</b> {hostname}<br/>"
 
     return html.format(hostname=socket.gethostname())
