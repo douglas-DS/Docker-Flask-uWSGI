@@ -12,14 +12,16 @@ node {
 
     stage('Build image')
         def customImage = docker.build("${imageName}")
-        slackNotifier(currentBuild.currentResult, 'Build')
+        slackNotifier(currentBuild.currentResult, 'Build image')
 
     stage('Push image')
     try {
-        customImage.push()
-        customImage.push('latest')
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-ds') {
+            custom.push()
+            customImage.push('latest')
+        }
     } catch(err) {
-        if (err) slackNotifier(currentBuild.currentResult, 'Push')
+        if (err) slackNotifier(currentBuild.currentResult, 'Push image')
     }
     slackNotifier(currentBuild.currentResult, 'Push')
 
@@ -27,5 +29,5 @@ node {
         sh "kubectl apply -f k8s_app.yaml"
         sh "kubectl set image deployments/${appName} ${appName}=${imageName}"
         sh "kubectl rollout status deployments/${appName}"
-        slackNotifier(currentBuild.currentResult, 'Deploy PROD')
+        slackNotifier(currentBuild.currentResult, 'Delivery')
 }
