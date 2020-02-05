@@ -15,15 +15,11 @@ node {
         slackNotifier(currentBuild.currentResult, 'Build image')
 
     stage('Push image')
-    try {
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-ds') {
             custom.push()
             customImage.push('latest')
         }
-    } catch(err) {
-        if (err) slackNotifier(currentBuild.currentResult, 'Push image')
-    }
-    slackNotifier(currentBuild.currentResult, 'Push')
+        slackNotifier(currentBuild.currentResult, 'Push image')
 
     stage('Delivery')
         sh "kubectl apply -f k8s_app.yaml"
