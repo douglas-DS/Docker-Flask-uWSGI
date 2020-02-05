@@ -45,9 +45,9 @@ metadata:
   name: app-ingress
 spec:
   rules:
-  - host: app-svc.default.cluster.com
+  - host: app.cluster-local.k8s.gigantic.io
     http:
-      paths:
+      path: /
       - backend:
-          serviceName: app-svc
+          serviceName: app
           servicePort: 5000
