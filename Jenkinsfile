@@ -15,7 +15,8 @@ node {
         slackNotifier(currentBuild.currentResult, 'Build image')
 
     stage('Push image')
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+            sh 'docker login -u "$USERNAME" -p "$PASSWORD"'
             custom.push()
             customImage.push('latest')
         }
