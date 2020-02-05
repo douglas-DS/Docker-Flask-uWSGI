@@ -47,7 +47,7 @@ spec:
   rules:
   - host: app.cluster-local.k8s.gigantic.io
     http:
-      path: /
+      paths:
       - backend:
           serviceName: app
           servicePort: 5000
