@@ -10,21 +10,20 @@ node {
         def imageName = "${companyName}/${appName}:${tag}"
         slackNotifier(currentBuild.currentResult, 'Checkout')
 
-    stage('Build')
+    stage('Build image')
         def customImage = docker.build("${imageName}")
         slackNotifier(currentBuild.currentResult, 'Build')
 
-    stage('Push')
+    stage('Push image')
     try {
-        
         customImage.push()
-        slackNotifier(currentBuild.currentResult, 'Push')
+        customImage.push('latest')
     } catch(err) {
-        slackNotifier(currentBuild.currentResult, 'Push')
+        if (err) slackNotifier(currentBuild.currentResult, 'Push')
     }
+    slackNotifier(currentBuild.currentResult, 'Push')
 
-    stage('Deploy PROD')
-        //customImage.push('latest')
+    stage('Delivery')
         sh "kubectl apply -f k8s_app.yaml"
         sh "kubectl set image deployments/${appName} ${appName}=${imageName}"
         sh "kubectl rollout status deployments/${appName}"
